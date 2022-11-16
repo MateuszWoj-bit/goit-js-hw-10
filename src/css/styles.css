@@ -7,6 +7,10 @@ body {
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+   background-image: 
+    radial-gradient(rgb(184, 199, 204) 14.8%, transparent 18.4%);
+  background-position: 4px 4px;
+  background-size: 8px 8px;  
   background-color: #fafafa;
   color: #212121;
   line-height: 1.5;

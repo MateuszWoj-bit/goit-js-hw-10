@@ -12,18 +12,24 @@ const debounced = debounce(inputHandler, DEBOUNCE_DELAY);
 textBox.addEventListener('input', debounced);
 
 function inputHandler() {
-  const searchQuery = textBox.value;  
+  const searchQuery = textBox.value;
+  const searchQueryTrim = searchQuery.trim();
   countryList.innerHTML = '';
   countryInfo.innerHTML = '';
-  if (searchQuery.trim() === '') {
+  if (searchQueryTrim === '') {
     return;
   }
-
-  fetchCountries(searchQuery.trim())
+  if (!onlyLettersAndSpaces(searchQueryTrim)) {
+     Notiflix.Notify.warning(
+       'Search query should contain only letters and spaces'
+     );
+  return;
+}
+  fetchCountries(searchQueryTrim)
     .then(posts => renderPosts(posts))
     .catch(error => console.log(error));
 }
-
+ 
 function renderPosts(posts) {  
   if (posts.length > 10) {
     Notiflix.Notify.info(
@@ -32,8 +38,8 @@ function renderPosts(posts) {
     return;
   }
   const markupList = posts
-    .map(({ name, flags}) => {      
-      return `<li> <img src="${flags.svg}" alt="Flag of ${name.official}"> <span>${name.official}</span>            
+    .map(({ name, flags }) => {        
+      return `<li> <img src="${flags.svg}" alt="Flag of ${name.common}"> <span>${name.common}</span>            
         </li>`;
     })
     .join('');
@@ -53,4 +59,8 @@ function renderPosts(posts) {
       .join('');
     countryInfo.innerHTML = markupInfo;
   }
+}
+
+function onlyLettersAndSpaces(str) {
+  return /^[A-Za-z\s]*$/.test(str);
 }
